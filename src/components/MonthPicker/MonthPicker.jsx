@@ -3,7 +3,7 @@ import s from './MonthPicker.module.css'
 import { useState } from "react";
 
 
-const MonthPicker = ({date, month, year, handleChange, handleChangeNext}) => {
+const MonthPicker = ({ month, year, handleChange, handleChangeNext}) => {
 
 
   return (

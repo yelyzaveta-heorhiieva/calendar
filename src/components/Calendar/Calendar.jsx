@@ -3,91 +3,131 @@ import s from './Calendar.module.css'
 import { FaCirclePlus, FaRegCalendarDays } from "react-icons/fa6";
 import Modal from 'react-modal';
 import DatePicker from '../DatePicker/DatePicker';
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import MonthPicker from '../MonthPicker/MonthPicker';
+import DayList from '../DayList/DayList';
+import TaskForm from '../TaskForm/TaskForm';
 
 const Calendar = () => {
-      const date = new Date();
-    const savedDate = JSON.parse(window.localStorage.getItem("date"));
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    
-  const [year, setYear] = useState(() => {
-    if (savedDate !== null) {
-      return savedDate.year;
-    }
-    return date.getFullYear();
-  })
 
-     const [month, setMonth] = useState(() => {
-    if (savedDate !== null) {
-      return savedDate.month;
-    }
-    return date.getMonth();
-  });
-
-    useEffect(() => {
-         window.localStorage.setItem("date", JSON.stringify({month, year}));
-    }, [month, year])
+    const newDate = new Date();
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const [isOpen, setIsOpen] = useState(false);
+    const [date, setDate] = useState(() => {
+        const savedDate = JSON.parse(window.localStorage.getItem("date"));
+        if (savedDate !== null) {
+      return savedDate;
+    }
+        return {
+            month: newDate.getMonth(),
+            year: newDate.getFullYear(),
+        }
+        
+    })
+    const [days, setDays] = useState([]);
+    const [currentDay, setCurrentDay] = useState(null);
+    const [formIsOpen, setFormIsOpen] = useState(false);
+    
 
     Modal.setAppElement('#root');
 
     const handleClick = (data) => {
-        setMonth(monthNames.indexOf(data))
+        setDate(prev => ({...prev, month: monthNames.indexOf(data)}))
     }
-
+    
+    
     const handleChange = () => {
-        setMonth(prev => {
-            if (prev <= 0) {
-                return (prev + 12) - 1 
+        setDate(prev => {
+            if (prev.month <= 0) {
+                return {
+                    ...prev,
+                    month: (prev.month + 12) - 1,
+                    year: prev.year - 1,
+                }
             }
-        return prev - 1
-        })
-        setYear(prev => {
-            if (month <= 0) {
-                return prev - 1 
-            }
-            return prev
+            return {
+                ...prev,
+                    month: prev.month - 1,
+                    year: prev.year
+                }
         })
     }
 
     const handleChangeNext = () => {
-
-        setMonth(prev => {
-            if (prev >= 11) {
-                return (prev - 12) + 1 
+                 setDate(prev => {
+            if (prev.month >= 11) {
+                return {
+                    ...prev,
+                    month: (prev.month - 12) + 1,
+                    year: prev.year + 1 
+                }
             }
-        return prev + 1
-        })
-        setYear(prev => {
-            if (month >= 11) {
-                return prev + 1 
-            }
-            return prev
+                     return {
+                ...prev,
+                    month: prev.month + 1,
+                    year: prev.year
+                }
         })
     }
 
-      const handleChangeYear = () => {
-        setYear(prev => prev - 1)
+    const handleChangeYear = () => {
+        setDate(prev => ({...prev, year: prev.year - 1}))
     }
      const handleChangeYearNext = () => {
-        setYear(prev => prev + 1)
+        setDate(prev => ({...prev, year: prev.year + 1}))
     }
 
-    const getDaysArr = (year, month) => {
-        const lala = new Date(year, month + 1, 0).getDate()
-        console.log(lala);
-        return Array.from({length: lala}, (_,i)=> i + 1)
+
+    const getDaysArr = ({year, month}) => {
+        const daysAmount = new Date(year, month + 1, 0).getDate();
+        return Array.from({ length: daysAmount }, (_, i) => 
+            ({ day: new Date(year, month, i + 1).getDay(), date: new Date(year, month, i + 1)}))
     }
 
-    // console.log(getDaysArr(year, month));
+
+       useEffect(() => {
+           window.localStorage.setItem("date", JSON.stringify(date));
+           setDays(getDaysArr(date))
+           setCurrentDay(null)
+           if (date.year === (newDate.getFullYear()) && date.month === (newDate.getMonth())) {
+     return setCurrentDay(newDate.getDate())
+    }
+       }, [date])
+    
+    const data = [
+        {
+            title: 'lalalalal',
+            description: 'nkjjdkjshks',
+            date: new Date(2025, 1, 14)
+        },
+         {
+            title: 'tototot',
+            description: 'nkjjdkjshks',
+            date: new Date(2025, 1, 14)
+        },
+        {
+            title: 'lfhdj',
+            description: 'nkjjdkjshks',
+            date: new Date(2024, 11, 1)
+        },
+        {
+            title: 'kooso',
+            description: 'nkjjdkjshks',
+            date: new Date(2025, 3, 21)
+        },
+         {
+            title: 'werty',
+            description: 'nkjjdkjshks',
+            date: new Date(2023, 10, 8)
+        },
+    ]
+
 
   return (
     <div>
       <div className={s.container}>
-        <button><FaCirclePlus className={s.icon} /></button>
+        <button type='button' onClick={() => setFormIsOpen(true)}><FaCirclePlus className={s.icon} /></button>
         <div className={s.filters}>
-          <MonthPicker month={monthNames[month]} year={year} handleChange={handleChange} handleChangeNext={handleChangeNext}/>
+          <MonthPicker month={monthNames[date.month]} year={date.year} handleChange={handleChange} handleChangeNext={handleChangeNext}/>
           <button onClick={() => setIsOpen(true)}><FaRegCalendarDays className={s.icon} /></button>
         </div>
       </div>
@@ -96,8 +136,16 @@ const Calendar = () => {
         onRequestClose={() => setIsOpen(false)}
         className={s.modal}
         overlayClassName={s.overlay}>
-              <DatePicker date={date} month={month} year={year} handleClick={handleClick} handleChange={handleChangeYear} handleChangeNext={handleChangeYearNext}/>
-        </Modal>
+              <DatePicker date={date} month={date.month} year={date.year} handleClick={handleClick} handleChange={handleChangeYear} handleChangeNext={handleChangeYearNext} monthNames={monthNames}/>
+          </Modal>
+          <Modal
+          isOpen={formIsOpen}
+        onRequestClose={() => setFormIsOpen(false)}
+        className={s.modal}
+        overlayClassName={s.overlay}>
+             <TaskForm />
+          </Modal>
+          <DayList days={days} currentDay={currentDay} data={data} />
     </div>
   )
 }
