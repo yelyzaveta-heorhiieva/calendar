@@ -1,0 +1,48 @@
+#root {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 70px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  line-height: 1;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+  font-style: normal;
+  color: currentColor;
+  line-height: 1;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  object-fit: cover;
+  height: auto;
+}
+
+button {
+  display: block;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  color: currentColor;
+  border: none;
+  line-height: 1;
+}

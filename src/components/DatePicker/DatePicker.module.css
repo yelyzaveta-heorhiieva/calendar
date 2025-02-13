@@ -1,0 +1,16 @@
+.month {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+  &:hover {
+    background-color: yellow;
+  }
+}
+
+.current {
+  background-color: green;
+}
+
+.active {
+  background-color: yellow;
+}
