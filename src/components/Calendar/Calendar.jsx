@@ -8,8 +8,17 @@ import DayList from '../DayList/DayList';
 import TaskForm from '../TaskForm/TaskForm';
 
 const Calendar = () => {
+    const today = new Date();
 
-    const newDate = new Date();
+    const formattedDateTime = (newDate) => {
+    const day = String(newDate.getDate()).padStart(2, '0');
+    const month = String(newDate.getMonth() + 1).padStart(2, '0'); 
+    const year = newDate.getFullYear();
+    const hours = String(newDate.getHours()).padStart(2, '0');
+        const minutes = String(newDate.getMinutes()).padStart(2, '0');
+        return `${day}.${month}.${year}, ${hours}:${minutes}`;
+    }
+
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const [isOpen, setIsOpen] = useState(false);
     const [date, setDate] = useState(() => {
@@ -18,14 +27,22 @@ const Calendar = () => {
       return savedDate;
     }
         return {
-            month: newDate.getMonth(),
-            year: newDate.getFullYear(),
+            month: today.getMonth(),
+            year: today.getFullYear(),
         }
         
     })
     const [days, setDays] = useState([]);
     const [currentDay, setCurrentDay] = useState(null);
     const [formIsOpen, setFormIsOpen] = useState(false);
+    const [values, setValues] = useState({title: '', description: '', date: formattedDateTime(today),});
+    const [data, setData] = useState(() => {
+        const savedData = JSON.parse(window.localStorage.getItem("data"));
+        if (savedData !== null) {
+      return savedData;
+    }
+        return [];    
+    })
     
 
     Modal.setAppElement('#root');
@@ -86,41 +103,45 @@ const Calendar = () => {
 
        useEffect(() => {
            window.localStorage.setItem("date", JSON.stringify(date));
+           window.localStorage.setItem("data", JSON.stringify(data));
            setDays(getDaysArr(date))
            setCurrentDay(null)
-           if (date.year === (newDate.getFullYear()) && date.month === (newDate.getMonth())) {
-     return setCurrentDay(newDate.getDate())
+           if (date.year === (today.getFullYear()) && date.month === (today.getMonth())) {
+     return setCurrentDay(today.getDate())
     }
-       }, [date])
+       }, [date, data])
     
-    const data = [
-        {
-            title: 'lalalalal',
-            description: 'nkjjdkjshks',
-            date: new Date(2025, 1, 14)
-        },
-         {
-            title: 'tototot',
-            description: 'nkjjdkjshks',
-            date: new Date(2025, 1, 14)
-        },
-        {
-            title: 'lfhdj',
-            description: 'nkjjdkjshks',
-            date: new Date(2024, 11, 1)
-        },
-        {
-            title: 'kooso',
-            description: 'nkjjdkjshks',
-            date: new Date(2025, 3, 21)
-        },
-         {
-            title: 'werty',
-            description: 'nkjjdkjshks',
-            date: new Date(2023, 10, 8)
-        },
-    ]
 
+    const onSubmit = (obj) => {
+        closeForm();
+        setData(prev => [...prev, obj])
+    }
+
+    const openTask = (id) => {
+        const task = data.filter(item => item.id === id);
+        task.map(item => setValues(item));
+        setFormIsOpen(true);
+    }
+
+      const onEdit = (obj) => {
+          closeForm();
+          setData(prev => prev.map((item) => {
+              if (item.id === obj.id) {
+                  return obj;
+                }
+          return item;
+          }))
+    }
+
+    const closeForm = () => {
+        setValues({ title: '', description: '', date: formattedDateTime(today), });
+        setFormIsOpen(false);
+    }
+
+    const openForm = (currentDay) => {
+        setFormIsOpen(true)
+        setValues(prev => ({...prev, date: formattedDateTime(currentDay)}))
+    }
 
   return (
     <div>
@@ -140,12 +161,12 @@ const Calendar = () => {
           </Modal>
           <Modal
           isOpen={formIsOpen}
-        onRequestClose={() => setFormIsOpen(false)}
+        onRequestClose={closeForm}
         className={s.modal}
         overlayClassName={s.overlay}>
-             <TaskForm />
+              <TaskForm onSubmit={onSubmit} initialValues={values} onEdit={onEdit} />
           </Modal>
-          <DayList days={days} currentDay={currentDay} data={data} />
+          <DayList days={days} currentDay={currentDay} data={data} openTask={openTask} openForm={openForm} />
     </div>
   )
 }
