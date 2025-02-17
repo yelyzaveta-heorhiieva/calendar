@@ -1,7 +1,7 @@
 import s from './DayList.module.css';
 import clsx from 'clsx';
 import TodoList from '../TodoList/TodoList';
-import { nanoid } from 'nanoid';
+
 
 const DayList = ({ days, currentDay, data, openTask, openForm, date}) => {
 
@@ -19,7 +19,7 @@ const DayList = ({ days, currentDay, data, openTask, openForm, date}) => {
                 <p>{item.date.getDate()}</p>
                 <p className={s.day}>{week[item.day]}</p>
             </div>
-            <TodoList data={data} day={item} openTask={openTask}/>
+              <TodoList data={data} day={item} openTask={openTask} />
           </li>)})}
     </ul>
   )

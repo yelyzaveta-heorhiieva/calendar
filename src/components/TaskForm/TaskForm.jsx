@@ -13,6 +13,7 @@ const TaskForm = ({onSubmit, initialValues, onEdit, openEdit, onDelete, closeFor
         title: values.title.trim(),
         description: values.description.trim(),
         date: values.date,
+        repeat: values.repeat,
         id: nanoid()
       });
     };
@@ -21,6 +22,7 @@ const TaskForm = ({onSubmit, initialValues, onEdit, openEdit, onDelete, closeFor
         title: values.title.trim(),
         description: values.description.trim(),
       date: values.date,
+      repeat:values.repeat,
       }) 
   }
 
@@ -74,6 +76,13 @@ const TaskForm = ({onSubmit, initialValues, onEdit, openEdit, onDelete, closeFor
             <ErrorMessage className={s.error} name="date" component="span" />
             </span>
             <Field name='date' className={s.input} />
+          </label>
+          <label className={s.label}>Check
+            <Field as="select" name="repeat" className={s.input}>
+          <option value='year'>Repeat every year</option>
+          <option value='month'>Repeat every month</option>
+          <option value='none' >No repeat</option>
+        </Field>
           </label>
           <div className={s.btnContainer}>
             <button className={s.btn} type='submit'>Save</button>

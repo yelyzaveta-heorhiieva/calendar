@@ -32,7 +32,7 @@ function App() {
     const [days, setDays] = useState([]);
     const [formIsOpen, setFormIsOpen] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
-    const [values, setValues] = useState({title: '', description: '', date: formattedDateTime(today),});
+    const [values, setValues] = useState({title: '', description: '', date: formattedDateTime(today), repeat: 'none'});
     const [data, setData] = useState(() => {
         const savedData = JSON.parse(window.localStorage.getItem("data"));
         if (savedData !== null) {
@@ -140,7 +140,7 @@ function App() {
     }
 
     const closeForm = () => {
-        setValues({ title: '', description: '', date: formattedDateTime(today), });
+        setValues({ title: '', description: '', date: formattedDateTime(today), repeat: 'none'});
         setFormIsOpen(false);
         setOpenEdit(false)
     }
@@ -154,7 +154,6 @@ function App() {
         setData(prev => prev.filter(item => item.id !== id));
         closeForm();
     }
-  
 
   return (
     <>
@@ -165,9 +164,10 @@ function App() {
         onRequestClose={closeForm}
         className="modal"
         overlayClassName="overlay">
-        <TaskForm onSubmit={onSubmit} initialValues={values} onEdit={onEdit} openEdit={openEdit} onDelete={deleteTask} closeForm={closeForm} />
+              <TaskForm onSubmit={onSubmit} initialValues={values} onEdit={onEdit}
+                  openEdit={openEdit} onDelete={deleteTask} closeForm={closeForm} />
        </Modal>
-       <DayList days={days} currentDay={today} data={data} openTask={openTask} openForm={openForm} date={date} />
+          <DayList days={days} currentDay={today} data={data} openTask={openTask} openForm={openForm} date={date} />
     </>
   )
 }
