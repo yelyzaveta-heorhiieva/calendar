@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #fff;
+  background-color: var(--task);
   padding: 10px;
   border-radius: 4px;
   width: 140px;
@@ -29,7 +29,7 @@
 .iconBtn {
   width: 16px;
   height: 16px;
-  fill: rgba(0, 0, 0, 0.8);
+  fill: #fff;
   transition: fill 250ms linear, transform 250ms linear;
   @media screen and (min-width: 768px) {
     width: 20px;

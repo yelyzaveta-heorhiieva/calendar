@@ -9,6 +9,7 @@
 
 .task {
   border-radius: 4px;
+  color: var(--accent);
   background-color: var(--task);
   padding: 4px;
 }

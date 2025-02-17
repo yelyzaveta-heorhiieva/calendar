@@ -5,9 +5,10 @@
   border-radius: 4px;
   text-align: center;
   font-size: 16px;
-  transition: background-color 250ms linear;
+  transition: background-color 250ms linear, color 250ms linear;
   &:hover {
-    background-color: var(--task);
+    color: black;
+    background-color: var(--accent);
   }
   @media screen and (min-width: 768px) {
     font-size: 20px;
@@ -15,11 +16,13 @@
 }
 
 .current {
-  background-color: var(--current);
+  background-color: var(--task);
+  color: var(--accent);
 }
 
 .active {
-  background-color: var(--task);
+  color: black;
+  background-color: var(--accent);
 }
 
 .picker {

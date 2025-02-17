@@ -3,10 +3,9 @@
   margin: 0 auto;
   padding: 20px;
   margin-top: 60px;
-  --main: rgb(243, 192, 83);
-  --accent: rgb(108, 5, 5);
-  --task: rgb(47, 255, 0);
-  --current: #23a066;
+  --main: rgb(83, 166, 243);
+  --accent: #fff;
+  --task: #020b66;
 }
 
 h1,
@@ -59,7 +58,7 @@ button {
   right: auto;
   margin-right: -50%;
   transform: translate(-50%, -50%);
-  background-color: rgb(243, 192, 83);
+  background-color: rgb(83, 166, 243);
   border-radius: 12px;
   padding: 30px 20px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
