@@ -2,20 +2,32 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import s from './TaskForm.module.css'
 import * as Yup from "yup";
 import { nanoid } from 'nanoid';
+import clsx from 'clsx';
+import { IoClose } from 'react-icons/io5';
 
-const TaskForm = ({onSubmit, initialValues, onEdit}) => {
+const TaskForm = ({onSubmit, initialValues, onEdit, openEdit, onDelete, closeForm}) => {
 
   const handleSubmit = (values) => {
     if (!initialValues.title) {
-      onSubmit({ ...values, id: nanoid() });
+      onSubmit({
+        title: values.title.trim(),
+        description: values.description.trim(),
+        date: values.date,
+        id: nanoid()
+      });
     };
-    onEdit(values) 
+    onEdit({
+      ...initialValues,
+        title: values.title.trim(),
+        description: values.description.trim(),
+      date: values.date,
+      }) 
   }
 
   const dateTimeRegex = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.(\d{4})(?:, (\d{2}):(\d{2}))?$/;
 
   const validationSchema = Yup.object().shape({
-  title: Yup.string().min(3, "Too Short!").max(50, "Too Long!").required("Required"),
+  title: Yup.string().min(1, "Too Short!").max(50, "Too Long!").trim().required("Required"),
   date: Yup
       .string()
     .matches(dateTimeRegex, 'Format must be DD.MM.YYYY or DD.MM.YYYY HH:MM')
@@ -39,26 +51,34 @@ const TaskForm = ({onSubmit, initialValues, onEdit}) => {
 
       return true;
     }).required('Date is required'),
-});
-
-
-
+  });
+  
   return (
     <>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
-        <Form>
-          <label>Title
-            <Field name="title" />
-            <ErrorMessage className={s.error} name="title" component="span" />
+        <Form className={s.form}>
+          <h2 className={s.title}>Add new idea item</h2>
+          <button type="button" onClick={() => closeForm()} className={s.closeBtn}><IoClose className={s.closeIcon} /></button>
+          <label className={s.label}><span>
+            Title
+            <span className={s.required}>*</span>
+            <ErrorMessage className={s.error} name="title" component="span" /></span>
+            <Field name="title" className={s.input} autoFocus />
           </label>
-          <label>Description
-            <Field name="description" />
+          <label className={s.label}>Description
+            <Field name="description" className={clsx(s.input, s.area)}  as="textarea"/>
           </label>
-          <label>Date
-            <Field name='date' />
+          <label className={s.label}>
+            <span>Date
+              <span className={s.required}>*</span>
             <ErrorMessage className={s.error} name="date" component="span" />
+            </span>
+            <Field name='date' className={s.input} />
           </label>
-          <button type='submit'>Submit</button>
+          <div className={s.btnContainer}>
+            <button className={s.btn} type='submit'>Save</button>
+            {openEdit && <button type='button' className={clsx(s.btn, s.delete)} onClick={() => onDelete(initialValues.id)}>Delete</button>}
+          </div>
         </Form>
       </Formik>
     </>

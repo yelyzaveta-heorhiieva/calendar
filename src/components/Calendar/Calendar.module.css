@@ -1,39 +1,36 @@
 .container {
   display: flex;
   justify-content: space-between;
+  padding: 10px 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  background-color: var(--main);
 }
 
 .icon {
-  width: 50px;
-  height: 50px;
+  width: 36px;
+  height: 36px;
+  fill: rgba(0, 0, 0, 0.8);
+  transition: fill 250ms linear;
 }
 
-.modal {
-  width: 280px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  right: auto;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  background-color: #e0c9ff;
-  border-radius: 12px;
-  padding: 30px 20px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-}
-
-.overlay {
-  position: fixed;
-  inset: 0px;
-  background-color: rgba(46, 43, 43, 0.837);
+.btn:hover .icon {
+  fill: var(--accent);
 }
 
 .filters {
   display: flex;
-  gap: 20px;
+  gap: 10px;
 }
 
 .monthPicker {
   display: flex;
   align-items: center;
+}
+
+.btn {
+  background-color: transparent;
 }

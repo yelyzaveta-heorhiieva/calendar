@@ -2,8 +2,18 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-top: 20px;
+  height: 140px;
+  overflow: auto;
 }
 
 .task {
-  background-color: aqua;
+  border-radius: 4px;
+  background-color: var(--task);
+  padding: 4px;
+}
+
+.taskTitle {
+  max-width: 170px;
+  overflow-wrap: break-word;
 }

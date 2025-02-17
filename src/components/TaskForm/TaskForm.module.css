@@ -1,3 +1,83 @@
 .error {
-  color: red;
+  margin-left: 20px;
+  color: rgb(108, 5, 5);
+}
+
+.required {
+  color: rgb(108, 5, 5);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.input {
+  padding: 6px;
+  border-radius: 4px;
+  outline: transparent;
+  border: none;
+}
+
+.area {
+  height: 90px;
+  resize: none;
+}
+
+.btn {
+  width: 80px;
+  height: 40px;
+  border-radius: 4px;
+  font-weight: 600;
+  background-color: #23a066;
+  margin: 0 auto;
+  margin-top: 10px;
+  transition: background-color 250ms linear;
+  &:hover {
+    background-color: #fff;
+  }
+}
+
+.delete {
+  background-color: #db3c3c;
+}
+
+.closeBtn {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+}
+
+.closeIcon {
+  width: 20px;
+  height: 20px;
+  transition: fill 250ms linear, transform 250ms linear;
+}
+
+.closeBtn:hover .closeIcon {
+  transform: scale(1.1);
+  fill: rgb(108, 5, 5);
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  text-align: center;
+  color: rgb(19, 10, 113);
+  margin-bottom: 20px;
 }

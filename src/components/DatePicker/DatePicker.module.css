@@ -1,16 +1,74 @@
 .month {
   padding: 10px;
-  border: 1px solid black;
+  box-shadow: rgba(60, 64, 67, 0.8) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.8) 0px 1px 3px 1px;
   border-radius: 4px;
+  text-align: center;
+  font-size: 16px;
+  transition: background-color 250ms linear;
   &:hover {
-    background-color: yellow;
+    background-color: var(--task);
+  }
+  @media screen and (min-width: 768px) {
+    font-size: 20px;
   }
 }
 
 .current {
-  background-color: green;
+  background-color: var(--current);
 }
 
 .active {
-  background-color: yellow;
+  background-color: var(--task);
+}
+
+.picker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--main);
+  border-radius: 12px;
+  padding: 30px 20px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(46, 43, 43, 0.837);
+}
+
+.monthList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(6, auto);
+  grid-auto-flow: column;
+  gap: 10px;
+}
+
+.closeBtn {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+}
+
+.closeIcon {
+  width: 20px;
+  height: 20px;
+  transition: fill 250ms linear, transform 250ms linear;
+}
+
+.closeBtn:hover .closeIcon {
+  transform: scale(1.1);
+  fill: var(--accent);
 }

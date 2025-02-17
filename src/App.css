@@ -2,7 +2,11 @@
   max-width: 1440px;
   margin: 0 auto;
   padding: 20px;
-  margin-top: 70px;
+  margin-top: 60px;
+  --main: rgb(243, 192, 83);
+  --accent: rgb(108, 5, 5);
+  --task: rgb(47, 255, 0);
+  --current: #23a066;
 }
 
 h1,
@@ -45,4 +49,24 @@ button {
   color: currentColor;
   border: none;
   line-height: 1;
+}
+
+.modal {
+  width: 280px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(243, 192, 83);
+  border-radius: 12px;
+  padding: 30px 20px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(46, 43, 43, 0.837);
 }

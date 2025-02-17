@@ -10,7 +10,7 @@ const TodoList = ({ data, day, openTask }) => {
         if (date.includes(day.date.toLocaleDateString('uk-UA'))) {
           return (
             <li key={id} className={s.task} onClick={() => openTask(id)}>
-              <p>{title}</p>
+              <p className={s.taskTitle}>{title}</p>
             </li>
           )}
           return;
