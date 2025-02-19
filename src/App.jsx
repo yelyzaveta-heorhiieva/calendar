@@ -6,11 +6,7 @@ import TaskForm from './components/TaskForm/TaskForm';
 import Modal from 'react-modal';
 
 
-
-function App() {
-    const today = new Date();
-
-    const formattedDateTime = (newDate) => {
+const formattedDateTime = (newDate) => {
     const day = String(newDate.getDate()).padStart(2, '0');
     const month = String(newDate.getMonth() + 1).padStart(2, '0'); 
     const year = newDate.getFullYear();
@@ -18,6 +14,12 @@ function App() {
         const minutes = String(newDate.getMinutes()).padStart(2, '0');
         return `${day}.${month}.${year}, ${hours}:${minutes}`;
     }
+
+
+function App() {
+    const today = new Date();
+
+    
     const [date, setDate] = useState(() => {
         const savedDate = JSON.parse(window.localStorage.getItem("date"));
         if (savedDate !== null) {
@@ -48,39 +50,18 @@ function App() {
         setDate(prev => ({...prev, month: data}))
     }
     
-    const prevMonth = () => {
+    const changeMonthYear = (step) => {
         setDate(prev => {
-            if (prev.month <= 0) {
-                return {
-                    ...prev,
-                    month: (prev.month + 12) - 1,
-                    year: prev.year - 1,
-                }
-            }
+            const newMonth = prev.month + step;
             return {
-                ...prev,
-                    month: prev.month - 1,
-                    year: prev.year
-                }
+                month: (newMonth + 12) % 12,
+                year: prev.year + Math.floor(newMonth / 12),
+            }
         })
     }
 
-    const nextMonth = () => {
-                 setDate(prev => {
-            if (prev.month >= 11) {
-                return {
-                    ...prev,
-                    month: (prev.month - 12) + 1,
-                    year: prev.year + 1 
-                }
-            }
-                     return {
-                ...prev,
-                    month: prev.month + 1,
-                    year: prev.year
-                }
-        })
-    }
+    const prevMonth = () => changeMonthYear(-1);
+    const nextMonth = () => changeMonthYear(1);
 
     const prevYear = () => {
         setDate(prev => ({...prev, year: prev.year - 1}))
@@ -97,12 +78,12 @@ function App() {
             return { day: date.getDay(), date };
         });
 
-    const prevMonth = getDays(year, month - 1);
-    const currentMonth = getDays(year, month);
-    const nextMonth = getDays(year, month + 1);
-        
-    const prevI = prevMonth.map(({ day }) => day).lastIndexOf(1); 
-    const nextI = nextMonth.findIndex(({ day }) => day === 1); 
+        const prevMonth = getDays(year, month - 1);
+        const currentMonth = getDays(year, month);
+        const nextMonth = getDays(year, month + 1);
+            
+        const prevI = prevMonth.map(({ day }) => day).lastIndexOf(1); 
+        const nextI = nextMonth.findIndex(({ day }) => day === 1); 
         
         const arr = [...prevMonth.slice(prevI), ...currentMonth, ...nextMonth.slice(0, nextI)]
         return arr.length < 42 ? [...prevMonth.slice(prevI), ...currentMonth, ...nextMonth.slice(0, nextI + 7)] : arr;
@@ -111,10 +92,12 @@ function App() {
 
        useEffect(() => {
            window.localStorage.setItem("date", JSON.stringify(date));
-           window.localStorage.setItem("data", JSON.stringify(data));
          setDays(getDaysArr(date))
-    }, [date, data])
+    }, [date])
   
+     useEffect(() => {
+           window.localStorage.setItem("data", JSON.stringify(data));
+    }, [data])
     
 
     const onSubmit = (obj) => {

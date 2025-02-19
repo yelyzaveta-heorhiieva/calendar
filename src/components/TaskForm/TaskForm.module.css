@@ -47,6 +47,10 @@
   }
 }
 
+.btn:disabled {
+  background-color: rgba(169, 169, 169, 0.795);
+}
+
 .delete {
   background-color: #db3c3c;
 }

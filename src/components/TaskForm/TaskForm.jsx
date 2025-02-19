@@ -8,28 +8,23 @@ import { IoClose } from 'react-icons/io5';
 const TaskForm = ({onSubmit, initialValues, onEdit, openEdit, onDelete, closeForm}) => {
 
   const handleSubmit = (values) => {
-    if (!initialValues.title) {
-      onSubmit({
+
+    const obj = {
         title: values.title.trim(),
         description: values.description.trim(),
         date: values.date,
         repeat: values.repeat,
-        id: nanoid()
-      });
+      }
+    if (!openEdit) {
+      onSubmit({...obj, id: nanoid()});
     };
-    onEdit({
-      ...initialValues,
-        title: values.title.trim(),
-        description: values.description.trim(),
-      date: values.date,
-      repeat:values.repeat,
-      }) 
+    onEdit({...initialValues,...obj }) 
   }
 
   const dateTimeRegex = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.(\d{4})(?:, (\d{2}):(\d{2}))?$/;
 
   const validationSchema = Yup.object().shape({
-  title: Yup.string().min(1, "Too Short!").max(50, "Too Long!").trim().required("Required"),
+  title: Yup.string().trim().min(1, "Too Short!").max(50, "Too Long!").required("Required"),
   date: Yup
       .string()
     .matches(dateTimeRegex, 'Format must be DD.MM.YYYY or DD.MM.YYYY HH:MM')
@@ -58,7 +53,7 @@ const TaskForm = ({onSubmit, initialValues, onEdit, openEdit, onDelete, closeFor
   return (
     <>
       <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
-        <Form className={s.form}>
+        {({isValid, dirty}) => (<Form className={s.form}>
           <h2 className={s.title}>Add new idea item</h2>
           <button type="button" onClick={() => closeForm()} className={s.closeBtn}><IoClose className={s.closeIcon} /></button>
           <label className={s.label}><span>
@@ -85,10 +80,10 @@ const TaskForm = ({onSubmit, initialValues, onEdit, openEdit, onDelete, closeFor
         </Field>
           </label>
           <div className={s.btnContainer}>
-            <button className={s.btn} type='submit'>Save</button>
+            <button className={s.btn} type='submit' disabled={!isValid || !dirty} >Save</button>
             {openEdit && <button type='button' className={clsx(s.btn, s.delete)} onClick={() => onDelete(initialValues.id)}>Delete</button>}
           </div>
-        </Form>
+        </Form>)}
       </Formik>
     </>
   )
