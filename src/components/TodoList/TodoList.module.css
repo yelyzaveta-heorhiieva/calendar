@@ -12,6 +12,7 @@
   color: var(--accent);
   background-color: var(--task);
   padding: 4px;
+  cursor: grab;
 }
 
 .taskTitle {

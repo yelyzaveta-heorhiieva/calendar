@@ -138,6 +138,21 @@ function App() {
         closeForm();
     }
 
+    const moveTask = (taskId, newDate) => {
+  setData(prev => prev.map(task =>
+    task.id === taskId ? { ...task, date: newDate.toLocaleDateString('uk-UA') } : task
+  ));
+    };
+    
+    const reorderTasks = (startIndex, endIndex) => {
+  setData(prev => {
+    const result = [...prev];
+      const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  });
+};
+
   return (
     <>
       <Calendar openForm={() => setFormIsOpen(true)} date={date} prevMonth={prevMonth} nextMonth={nextMonth} handleClick={changeMonth}
@@ -150,7 +165,8 @@ function App() {
               <TaskForm onSubmit={onSubmit} initialValues={values} onEdit={onEdit}
                   openEdit={openEdit} onDelete={deleteTask} closeForm={closeForm} />
        </Modal>
-          <DayList days={days} currentDay={today} data={data} openTask={openTask} openForm={openForm} date={date} />
+          <DayList days={days} currentDay={today} data={data} openTask={openTask} openForm={openForm} date={date} 
+          moveTask={moveTask} reorderTasks={reorderTasks}/>
     </>
   )
 }

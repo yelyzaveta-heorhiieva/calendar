@@ -1,6 +1,23 @@
+import { useState } from 'react';
 import s from './TodoList.module.css'
 
-const TodoList = ({ data, day, openTask }) => {
+const TodoList = ({ data, day, openTask, reorderTasks }) => {
+
+
+const handleDragStart = (e, taskId) => {
+    e.dataTransfer.setData('taskId', taskId);
+  };
+
+   const handleReorderStart = (e, index) => {
+    e.dataTransfer.setData('index', index);
+  };
+
+  const handleReorderDrop = (e, dropIndex) => {
+    e.preventDefault();
+    const dragIndex = e.dataTransfer.getData('index');
+    reorderTasks(dragIndex, dropIndex);
+  };
+
   
   if (!data.length) {
     return;
@@ -17,8 +34,11 @@ const TodoList = ({ data, day, openTask }) => {
           default: return false;
         }
       })
-        .map(({ title, id }) => (
-        <li key={id} className={s.task} onClick={() => openTask(id)}>
+        .map(({ title, id }, index) => (
+          <li key={id} className={s.task} onClick={() => openTask(id)} draggable={true}
+            onDragStart={(e) => { handleDragStart(e, id); handleReorderStart(e, index)}} 
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => handleReorderDrop(e, index)}>
           <p className={s.taskTitle}>{title}</p>
         </li>
         ))
